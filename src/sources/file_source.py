@@ -16,5 +16,4 @@ class FileSource:
                 for i, line in enumerate(file):
                     yield Task(id=(i+1), payload=line.strip())
         except FileNotFoundError:
-            print("File not found")
-            return []
+            return
