@@ -4,10 +4,14 @@ from src.infrastructure.validation import time_validation
 
 
 class CreateField:
+    '''Creation field for Task model'''
+
     def __set_name__(self, owner, name) -> None:
+        '''Determine the attribute name'''
         self.attr_name = "_" + name
 
     def __set__(self, field_instance, create_date: str) -> None:
+        '''Determine how creation date will set when assigned'''
         if not isinstance(create_date, str):
             raise TypeError(
                 "Creation date must be in the format: YYYY-MM-DD HH:MM:SS")
@@ -20,10 +24,12 @@ class CreateField:
         field_instance.__dict__[
             self.attr_name] = datetime.strptime(create_date, "%Y-%m-%d %H:%M:%S")
 
-    def __get__(self, field_instance, owner=None) -> None:
+    def __get__(self, field_instance, owner=None):
+        '''Determine how creation date will get when accessed'''
         if not field_instance:
             return self
         return field_instance.__dict__[self.attr_name]
 
     def __delete__(self, field_instance) -> None:
+        '''Determine how creation date will be deleted'''
         raise PermissionError("Creation time can't be deleted!")

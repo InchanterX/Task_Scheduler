@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from src.models.id_field import IdField
 from src.models.description_field import DescriptionField
@@ -12,12 +12,14 @@ from src.models.deadline_field import DeadlineField
 @dataclass
 class Task:
     '''Task model'''
-    id: int = IdField()
-    description: str = DescriptionField()
-    priority: int = PriorityField()
-    status: str = StatusField()
-    create_time: datetime = CreateField()
-    deadline_time: datetime = DeadlineField()
+
+    # Base fields definition
+    id = IdField()
+    description = DescriptionField()
+    priority = PriorityField()
+    status = StatusField()
+    create_time = CreateField()
+    deadline_time = DeadlineField()
 
     def __init__(
             self,
@@ -28,6 +30,7 @@ class Task:
             input_create_time: str,
             input_deadline_time: str,
     ):
+        '''Initialize a new task instance.'''
         self.id = input_id
         self.description = input_description
         self.priority = input_priority
@@ -37,6 +40,7 @@ class Task:
 
     @property
     def duration(self):
+        '''Calculate the duration of the task as a attribute.'''
         time_delta = self.deadline_time - self.create_time
         if time_delta < timedelta(0):
             self.status = "expired"

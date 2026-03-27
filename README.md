@@ -18,8 +18,15 @@ It's a Task Scheduler program! But currently it just read tasks from different s
     │            ├── __init__.py               #
     │            ├── constants.py              # contains constants
     │            ├── logger.py                 # logger initialization
+    │            ├── validation.py              # validation functions collection
     │       ├── models/                        # data models
     │            ├── __init__.py               #
+    │            ├── create_field.py           # creation time field
+    │            ├── deadline_field.py         # deadline time field
+    │            ├── description_field.py      # description field
+    │            ├── id_field.py               # ID field
+    │            ├── priority_field.py         # priority field
+    │            ├── status_field.py           # status field
     │            ├── task.py                   # task dataclass
     |       ├── services/                      # actual services
     │            ├── __init__.py               #

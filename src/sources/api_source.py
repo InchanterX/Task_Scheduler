@@ -3,7 +3,7 @@ from typing import Iterable
 
 
 class ApiSources:
-    '''Get tasks from imaginable API а'''
+    '''Get tasks from imaginable API'''
 
     def __init__(self):
         pass
