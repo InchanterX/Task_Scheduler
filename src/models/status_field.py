@@ -5,9 +5,9 @@ class StatusField:
     def __set__(self, field_instance, status) -> None:
         if not isinstance(status, str):
             raise TypeError("Status must be a string!")
-        elif status.lower() not in ["pending", "active", "expired", "canceled"]:
+        elif status.lower() not in ["pending", "active", "finished", "canceled"]:
             raise ValueError(
-                "Status of the Task can only be: pending, active, expired, canceled")
+                "Status of the Task can only be: pending, active, finished, canceled")
         field_instance.__dict__[self.attr_name] = status.lower()
 
     def __get__(self, field_instance, owner=None) -> str:

@@ -13,7 +13,7 @@ class CreateField:
                 "Creation date must be in the format: YYYY-MM-DD HH:MM:SS")
         elif not time_validation(create_date):
             raise ValueError(
-                f"Time must be in the format: YYYY-MM-DD HH:MM:SS\nFormat of the line you entered is:      {create_date}")
+                f"Time must be in the format: YYYY-MM-DD HH:MM:SS\nFormat of the line you entered is:      {create_date} and have type {type(create_date)}")
 
         if self.attr_name in field_instance.__dict__:
             raise PermissionError("Creation time can't be modified!")

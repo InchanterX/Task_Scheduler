@@ -1,4 +1,0 @@
-Attend python laboratory work, and lectures
-Fix bugs in discrete mathematics laboratory work
-Design first page of the Faberge project site
-Design first page of the TeamFlow project

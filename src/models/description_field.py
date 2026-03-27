@@ -6,7 +6,7 @@ class DescriptionField:
         if not isinstance(description, str):
             raise TypeError(
                 f"Description must be a string!")
-        field_instance.__dict__[self.attr_name] = str
+        field_instance.__dict__[self.attr_name] = description
 
     def __get__(self, field_instance, owner=None) -> str:
         if not field_instance:

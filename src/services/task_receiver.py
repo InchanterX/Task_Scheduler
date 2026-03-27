@@ -33,7 +33,15 @@ class TaskReceiver:
         else:
             print("====================")
             for task in tasks:
-                print(f"Task ID: {task.id}, Payload: {task.payload}")
+                print(
+                    f"Task ID: {task.id}, "
+                    f"Description: {task.description}, "
+                    f"Priority: {task.priority}, "
+                    f"Status: {task.status}, "
+                    f"Create Time: {task.create_time}, "
+                    f"Deadline Time: {task.deadline_time}, "
+                    f"Duration: {task.duration}"
+                )
             logger.info("Displayed all received tasks.")
             logger.debug(f"Displayed tasks: {tasks}")
             print("====================\n")
