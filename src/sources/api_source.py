@@ -2,7 +2,7 @@ from src.models.task import Task
 from typing import Iterable
 
 
-class ApiSources:
+class ApiMockTaskSource:
     '''Get tasks from imaginable API'''
 
     def __init__(self):

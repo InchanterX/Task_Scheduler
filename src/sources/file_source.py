@@ -6,8 +6,8 @@ from typing import Iterable
 class FileSource:
     '''Receive tasks from a file line by line'''
 
-    def __init__(self, file_name: str):
-        self._file_path = path.abspath(path.join("tasks_source", file_name))
+    def __init__(self, file_name: str, dir_name: str = "tasks_source"):
+        self._file_path = path.abspath(path.join(dir_name, file_name))
 
     def get_tasks(self) -> Iterable[Task]:
         '''Open file and yield tasks'''

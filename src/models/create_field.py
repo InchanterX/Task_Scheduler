@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from typing import Union, Optional
 from src.infrastructure.validation import time_validation
 from src.infrastructure.logger import logger
 
@@ -7,11 +7,11 @@ from src.infrastructure.logger import logger
 class CreateField:
     '''Creation field for Task model'''
 
-    def __set_name__(self, owner, name) -> None:
+    def __set_name__(self, owner: type, name: str) -> None:
         '''Determine the attribute name'''
         self.attr_name = "_" + name
 
-    def __set__(self, field_instance, create_date: str) -> None:
+    def __set__(self, field_instance: object, create_date: str) -> None:
         '''Determine how creation date will set when assigned'''
         if not isinstance(create_date, str):
             logger.error(f"Invalid creation date type: {type(create_date)}")
@@ -30,7 +30,7 @@ class CreateField:
         field_instance.__dict__[
             self.attr_name] = datetime.strptime(create_date, "%Y-%m-%d %H:%M:%S")
 
-    def __get__(self, field_instance, owner=None):
+    def __get__(self, field_instance: object, owner: Optional[type] = None) -> Union[str, "CreateField"]:
         '''Determine how creation date will get when accessed'''
         if not field_instance:
             logger.error("Field instance is required to access creation date.")
@@ -39,7 +39,7 @@ class CreateField:
             f"Accessing creation date for Task. Current creation date: '{field_instance.__dict__.get(self.attr_name)}'")
         return field_instance.__dict__[self.attr_name]
 
-    def __delete__(self, field_instance) -> None:
+    def __delete__(self, field_instance: object) -> None:
         '''Determine how creation date will be deleted'''
         logger.error("Attempting to delete Task Creation Date.")
         raise PermissionError("Creation time can't be deleted!")

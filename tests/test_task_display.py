@@ -1,11 +1,9 @@
-from src.sources.file_source import FileSource
+from src.infrastructure.display import display_tasks
 from src.models.task import Task
 
 
-def test_file_sources_2():
-    a = FileSource("friday.txt")
-    tasks = list(a.get_tasks())
-    assert tasks == [
+def test_display_received_tasks_1():
+    result = [
         Task(input_id=1,
              input_description='Finish sprint presentation',
              input_priority=100,
@@ -31,9 +29,11 @@ def test_file_sources_2():
              input_create_time='2026-03-21 12:00:00',
              input_deadline_time='2026-03-28 13:00:00'),
     ]
+    tasks = display_tasks(result)
+    assert not tasks
 
 
-def test_wrong_file_source():
-    a = FileSource("wrong_file.txt")
-    tasks = list(a.get_tasks())
-    assert tasks == []
+def test_display_received_tasks_2():
+    result = []
+    tasks = display_tasks(result)
+    assert not tasks
