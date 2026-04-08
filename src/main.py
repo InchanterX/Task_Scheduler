@@ -1,8 +1,9 @@
 from src.infrastructure.logger import logger
+from src.infrastructure.display import display_tasks
 from src.services.task_receiver import TaskReceiver
 from src.sources.file_source import FileSource
 from src.sources.generate_source import GenerateSource
-from src.sources.api_source import ApiSources
+from src.sources.api_source import ApiMockTaskSource
 
 
 def main():
@@ -24,18 +25,18 @@ def main():
                     print("Invalid input! Enter a positive integer!\n")
                     continue
                 generate_option = GenerateSource(int(number))
-                receiver1 = TaskReceiver(generate_option)
-                receiver1.display_tasks()
+                receiver1 = list(TaskReceiver(generate_option).receive_tasks())
+                display_tasks(receiver1)
             case "2":
-                api_option = ApiSources()
-                receiver2 = TaskReceiver(api_option)
-                receiver2.display_tasks()
+                api_option = ApiMockTaskSource()
+                receiver2 = list(TaskReceiver(api_option).receive_tasks())
+                display_tasks(receiver2)
             case "3":
                 file_name = input("Enter the file name: ")
                 logger.info(f"User entered file name: {file_name}")
                 file_option = FileSource(file_name)
-                receiver3 = TaskReceiver(file_option)
-                receiver3.display_tasks()
+                receiver3 = list(TaskReceiver(file_option).receive_tasks())
+                display_tasks(receiver3)
             case "4":
                 break
             case _:

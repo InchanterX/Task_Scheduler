@@ -1,5 +1,4 @@
-Attend Faberge meeting
-Visit gym
-Make progress with mathematical analysis homework
-Attend python web development lecture
-Attend mathematical analysis online seminar
+1 Finish sprint presentation 100 finished 2026-03-26 23:00:00 2026-03-27 9:00:00
+2 Presentation protection 1000 finished 2026-03-06 23:00:00 2026-03-27 9:15:00
+3 Python laboratory work 10 active 2026-03-14 12:00:00 2026-03-28 23:59:59
+4 Prepare to Python context 90 active 2026-03-21 12:00:00 2026-03-28 13:00:00
