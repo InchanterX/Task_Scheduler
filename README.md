@@ -31,7 +31,8 @@ It's a Task Scheduler program! But currently it just read tasks from different s
     |       ├── services/                      # actual services
     │            ├── __init__.py               #
     │            ├── task_receiver.py          # service for receiving and displaying tasks
-    |       ├── sources/                       # functions for processing task sources
+    │            ├── task_queue.py             # iterable queue of tasks implementation
+    │       ├── sources/                       # functions for processing task sources
     │            ├── __init__.py               #
     │            ├── api_sources.py            # functions for processing API task sources
     │            ├── file_sources.py           # functions for processing file task sources
@@ -60,10 +61,10 @@ python -m pytest
 ```
 
 # How it works
-Service 'task_receiver.py' use duck typing to handle different task sources. This sources are:
+'task_queue.py' use duck typing to handle different task sources and implement an iterable queue of tasks. This sources are:
 - API sources
 - File sources
 - Generated sources
-They are described and stored in a separate folder. All of them have get_tasks() method, that is called by the task_receiver service to retrieve tasks without thinking about how it will do it.
+They are described and stored in a separate folder. All of them have get_tasks() method, that is called by the task_queue service to retrieve tasks without thinking about how it will do it.
 
 All tasks are stored in the same format that is determined by the task dataclass. And contract determine how this tasks will be processed.
