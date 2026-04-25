@@ -19,7 +19,7 @@ class PriorityField:
             logger.error(f"Invalid priority value: {priority}")
             raise ValueError("Priority must be greater or equal to zero!")
 
-        logger.info(f"Setting priority for Task: '{priority}'")
+        logger.debug(f"Setting priority for Task: '{priority}'")
         field_instance.__dict__[self.attr_name] = priority
 
     def __get__(self, field_instance: object, owner: Optional[type] = None) -> Union[str, "PriorityField"]:
@@ -27,7 +27,7 @@ class PriorityField:
         if not field_instance:
             logger.error("Field instance is required to access priority.")
             return self
-        logger.info(
+        logger.debug(
             f"Accessing priority for Task. Current priority: '{field_instance.__dict__.get(self.attr_name)}'")
         return field_instance.__dict__[self.attr_name]
 

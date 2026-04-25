@@ -20,14 +20,14 @@ LOGGING_CONFIG = {
             "filename": os.path.join(LOG_DIR, "task_scheduler.log"),
             "maxBytes": 5 * 1024 * 1024,  # 5 MB before rotating
             "backupCount": 5,
-            "level": "DEBUG",
+            "level": "WARNING",
             "encoding": "utf-8"
         },
     },
     "loggers": {
         "": {
             "handlers": ["file"],
-            "level": "DEBUG",
+            "level": "WARNING",
             "propagate": True,
         }
     },
