@@ -396,3 +396,8 @@ cython_debug/
 
 # Visual Studio Code configs
 .vscode
+
+# logs
+task_scheduler_log
+.task_scheduler_log
+task_scheduler_log.*
