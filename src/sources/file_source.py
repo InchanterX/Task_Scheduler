@@ -1,6 +1,7 @@
 from os import path
 from src.models.task import Task
-from typing import Iterable
+from typing import AsyncIterable
+from src.sources.async_file_reader import AsyncFileReader
 
 
 class FileSource:
@@ -9,11 +10,11 @@ class FileSource:
     def __init__(self, file_name: str, dir_name: str = "tasks_source"):
         self._file_path = path.abspath(path.join(dir_name, file_name))
 
-    def get_tasks(self) -> Iterable[Task]:
+    async def get_tasks(self) -> AsyncIterable[Task]:
         '''Open file and yield tasks'''
         try:
-            with open(self._file_path, 'r', encoding='utf-8') as file:
-                for line in file:
+            async with AsyncFileReader(self._file_path) as reader:
+                async for line in reader:
                     splitted_line = line.strip().split(" ")
                     yield Task(
                         input_id=int(splitted_line[0]),

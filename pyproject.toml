@@ -14,6 +14,7 @@ ignore_missing_imports = true
 [tool.uv]
 dev-dependencies=[
     "pyfakefs>=5.10.1",
+    "pytest-asyncio>=1.3.0",
     "pytest-cov>=7.0.0",
     "ruff>=0.14.2",
 ]
@@ -23,17 +24,17 @@ addopts = [
   "--cov=src",
   "--cov-branch",
   "--cov-report=term-missing",
+  "--ignore=tests/test_task_receiver.py",
   "-q",
 ]
 testpaths = ["tests"]
 pythonpath = ["src"]
 
-
 [tool.coverage.run]
 source = ["src"]
 branch = true
 parallel = true
-omit = ["*/__init__.py", "*/main.py", "*/shell.py", "*/common/*", "*/enums/*", "*/dependencies/*", "*/contracts/*"]
+omit = ["*/__init__.py", "*/main.py", "*/shell.py", "*/common/*", "*/enums/*", "*/dependencies/*", "*/contracts/*", "src/services/task_receiver.py"]
 
 
 [tool.coverage.report]

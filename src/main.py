@@ -1,3 +1,4 @@
+import asyncio
 from src.infrastructure.logger import logger
 from src.infrastructure.display import display_tasks
 from src.sources.file_source import FileSource
@@ -29,7 +30,7 @@ def get_queue_from_source(choice: str) -> TaskQueue | None:
         return None
 
 
-def apply_filters(queue: TaskQueue) -> TaskQueue:
+async def apply_filters(queue: TaskQueue) -> TaskQueue:
     while True:
         print("Filters:")
         print("1. Filter by status")
@@ -44,7 +45,7 @@ def apply_filters(queue: TaskQueue) -> TaskQueue:
             status = input(
                 "Status (pending/active/finished/canceled): ").strip().lower()
             if status:
-                queue = queue.filter_by_status(status)
+                queue = await queue.filter_by_status(status)
                 print(f"Filtered by status: {status}")
             else:
                 print("Status cannot be empty.")
@@ -52,15 +53,13 @@ def apply_filters(queue: TaskQueue) -> TaskQueue:
         elif choice == "2":
             priority = input("Max priority (number): ").strip()
             if priority.isdigit():
-                queue = queue.filter_by_priority(int(priority))
+                queue = await queue.filter_by_priority(int(priority))
                 print(f"Filtered by priority <= {priority}")
             else:
                 print("Invalid number.")
 
         elif choice == "3":
-            tasks = list(queue)
-            display_tasks(tasks)
-            print(f"Total: {len(tasks)} tasks")
+            await display_tasks(queue)
 
         elif choice == "4":
             return queue
@@ -69,7 +68,7 @@ def apply_filters(queue: TaskQueue) -> TaskQueue:
             print("Invalid choice. Enter 1-4.")
 
 
-def main():
+async def main():
     logger.info("Task Scheduler started.")
 
     while True:
@@ -89,15 +88,12 @@ def main():
         if queue is None:
             continue
 
-        all_tasks = list(queue)
-        print(f"\nLoaded {len(all_tasks)} tasks:")
-        display_tasks(all_tasks)
+        await display_tasks(queue)
 
         if input("\nApply filters? (y/n): ").strip().lower() == 'y':
-            filtered_queue = apply_filters(queue)
-            final_tasks = list(filtered_queue)
+            filtered_queue = await apply_filters(queue)
             print("\nFILTERED TASKS:\n")
-            display_tasks(final_tasks)
+            await display_tasks(filtered_queue)
 
         input("\nPress Enter to continue...\n")
 
@@ -105,4 +101,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

@@ -1,39 +1,54 @@
 from src.infrastructure.display import display_tasks
 from src.models.task import Task
+from src.services.task_queue import TaskQueue
+from src.sources.generate_source import GenerateSource
+import pytest
 
 
-def test_display_received_tasks_1():
-    result = [
-        Task(input_id=1,
-             input_description='Finish sprint presentation',
-             input_priority=100,
-             input_status='finished',
-             input_create_time='2026-03-26 23:00:00',
-             input_deadline_time='2026-03-27 09:00:00'),
-        Task(input_id=2,
-             input_description='Presentation protection',
-             input_priority=1000,
-             input_status='finished',
-             input_create_time='2026-03-06 23:00:00',
-             input_deadline_time='2026-03-27 09:15:00'),
-        Task(input_id=3,
-             input_description='Python laboratory work',
-             input_priority=10,
-             input_status='active',
-             input_create_time='2026-03-14 12:00:00',
-             input_deadline_time='2026-03-28 23:59:59'),
-        Task(input_id=4,
-             input_description='Prepare to Python context',
-             input_priority=90,
-             input_status='active',
-             input_create_time='2026-03-21 12:00:00',
-             input_deadline_time='2026-03-28 13:00:00'),
-    ]
-    tasks = display_tasks(result)
-    assert not tasks
+@pytest.mark.asyncio
+async def test_display_tasks_with_tasks(capsys):
+    queue = TaskQueue(GenerateSource(2))
+    await display_tasks(queue)
+
+    captured = capsys.readouterr()
+    assert "Task ID:" in captured.out
+    assert "Description:" in captured.out
+    assert "Priority:" in captured.out
 
 
-def test_display_received_tasks_2():
-    result = []
-    tasks = display_tasks(result)
-    assert not tasks
+@pytest.mark.asyncio
+async def test_display_empty_tasks(capsys):
+    async def empty_source():
+        return
+        yield
+
+    queue = TaskQueue(empty_source)
+    await display_tasks(queue)
+
+    captured = capsys.readouterr()
+    assert "No tasks found" in captured.out
+
+
+@pytest.mark.asyncio
+async def test_display_tasks_formatting(capsys):
+    queue = TaskQueue(GenerateSource(1))
+    await display_tasks(queue)
+
+    captured = capsys.readouterr()
+    assert "====================" in captured.out
+    assert "Task ID:" in captured.out
+    assert "Description:" in captured.out
+    assert "Priority:" in captured.out
+    assert "Status:" in captured.out
+    assert "Create Time:" in captured.out
+    assert "Deadline Time:" in captured.out
+    assert "Duration:" in captured.out
+
+
+@pytest.mark.asyncio
+async def test_display_tasks_shows_count(capsys):
+    queue = TaskQueue(GenerateSource(3))
+    await display_tasks(queue)
+
+    captured = capsys.readouterr()
+    assert "3" in captured.out

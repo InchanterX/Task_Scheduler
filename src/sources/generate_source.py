@@ -1,5 +1,5 @@
 from src.models.task import Task
-from typing import Iterable
+from typing import AsyncIterable
 
 
 class GenerateSource:
@@ -8,7 +8,7 @@ class GenerateSource:
     def __init__(self, count: int):
         self._count = count
 
-    def get_tasks(self) -> Iterable[Task]:
+    async def get_tasks(self) -> AsyncIterable[Task]:
         '''Generate task data with generator'''
         for n in range(1, self._count + 1):
             yield Task(

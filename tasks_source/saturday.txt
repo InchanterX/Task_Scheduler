@@ -1,0 +1,8 @@
+1 Finish API tests for Faberge project service 100 finished 2026-05-23 9:00:00 2026-05-23 9:15:00
+2 Make Integration tests for Faberge project service 120 finished 2026-05-23 9:15:00 2026-05-23 10:15:00
+3 Attend python laboratory work online 60 finished 2026-05-23 10:15:00 2026-05-23 12:30:00
+4 Python laboratory work 1000 active 2026-05-23 13:00:00 2026-05-23 17:00:00
+5 Write documentation for Faberge project service 50 pending 2026-05-23 17:00:00 2026-05-23 18:00:00
+6 Write documentation for Faberge infrastructure repository 50 pending 2026-05-23 18:00:00 2026-05-23 18:30:00
+7 Write documentation for Faberge apigateway 50 pending 2026-05-23 18:30:00 2026-05-23 19:00:00
+8 Implement one of the TeamFlow confirmation engine's repository layers 2000 pending 2026-05-23 19:00:00 2026-05-23 22:00:00
