@@ -3,17 +3,20 @@ from functools import partial
 
 
 class AsyncFileReader:
-    """Asynchronous file reader for task files"""
+    '''Asynchronous file reader for task files'''
 
     def __init__(self, file_path: str):
+        '''Initialize with the path to the file to read'''
         self._file_path = file_path
         self._file = None
         self._loop = None
 
     def __aiter__(self):
+        '''Return the iterator object itself'''
         return self
 
     async def __aenter__(self):
+        '''Open the file for reading'''
         self._loop = asyncio.get_running_loop()
         self._file = await self._loop.run_in_executor(
             None,
@@ -28,6 +31,7 @@ class AsyncFileReader:
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
+        '''Close the file when everything is done'''
         if self._file is not None:
             await self._loop.run_in_executor(
                 None,
@@ -35,6 +39,7 @@ class AsyncFileReader:
             )
 
     async def __anext__(self) -> str:
+        '''Read the next line of the currently opened file'''
         line = await self._loop.run_in_executor(
             None,
             self._file.readline

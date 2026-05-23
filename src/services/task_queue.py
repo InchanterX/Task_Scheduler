@@ -15,6 +15,7 @@ class TaskQueue:
         self,
         source: Union[TaskSource, Callable[[], AsyncIterable[Task]]]
     ):
+        '''Initialize the TaskQueue with a task source'''
         if isinstance(source, TaskSource):
             self._factory = source.get_tasks
         elif callable(source):
@@ -28,12 +29,12 @@ class TaskQueue:
         return self._iterate()
 
     async def _iterate(self):
-        '''Delegate iteration to the factory's async generator.'''
+        '''Delegate iteration to the factory's async generator'''
         async for task in self._factory():
             yield task
 
     async def filter_by_status(self, status: str) -> "TaskQueue":
-        '''Filter tasks by status. Returns a new TaskQueue.'''
+        '''Filter tasks by status. Returns a new TaskQueue'''
         async def factory() -> AsyncIterable[Task]:
             async for task in self:
                 if task.status == status:
@@ -43,7 +44,7 @@ class TaskQueue:
         return TaskQueue(factory)
 
     async def filter_by_priority(self, priority: int) -> "TaskQueue":
-        '''Filter tasks by priority (<=). Returns a new TaskQueue.'''
+        '''Filter tasks by priority (<=). Returns a new TaskQueue'''
         async def factory() -> AsyncIterable[Task]:
             async for task in self:
                 if task.priority <= priority:

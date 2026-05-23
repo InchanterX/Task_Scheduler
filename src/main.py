@@ -5,9 +5,12 @@ from src.sources.file_source import FileSource
 from src.sources.generate_source import GenerateSource
 from src.sources.api_source import ApiMockTaskSource
 from src.services.task_queue import TaskQueue
+from src.services.task_executor import TaskExecutor
+from src.handlers.handlers import LoggingHandler
 
 
 def get_queue_from_source(choice: str) -> TaskQueue | None:
+    '''Based on the user source return task queue for corresponding source'''
     if choice == "1":
         number = input("Enter the number of tasks to generate: ")
         logger.info(f"User entered number of tasks to generate: {number}")
@@ -31,6 +34,7 @@ def get_queue_from_source(choice: str) -> TaskQueue | None:
 
 
 async def apply_filters(queue: TaskQueue) -> TaskQueue:
+    '''Apply one of the available filters to the queue based on the user preferences'''
     while True:
         print("Filters:")
         print("1. Filter by status")
@@ -69,6 +73,7 @@ async def apply_filters(queue: TaskQueue) -> TaskQueue:
 
 
 async def main():
+    '''It's a main file!'''
     logger.info("Task Scheduler started.")
 
     while True:
@@ -94,6 +99,14 @@ async def main():
             filtered_queue = await apply_filters(queue)
             print("\nFILTERED TASKS:\n")
             await display_tasks(filtered_queue)
+        else:
+            filtered_queue = queue
+
+        if input("\nProcess tasks? (y/n): ").strip().lower() == 'y':
+            async with TaskExecutor(filtered_queue, LoggingHandler()) as executor:
+                await executor.run()
+            print(
+                f"Done: {executor._processed} processed, {executor._failed} failed.")
 
         input("\nPress Enter to continue...\n")
 
