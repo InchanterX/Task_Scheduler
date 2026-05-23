@@ -19,7 +19,7 @@ class DeadlineField:
             logger.error(f"Invalid deadline format: {create_date}")
             raise ValueError("Time must be in the format: YYYY-MM-DD HH:MM:SS")
 
-        logger.info(f"Setting deadline for Task: '{create_date}'")
+        logger.debug(f"Setting deadline for Task: '{create_date}'")
         field_instance.__dict__[
             self.attr_name] = datetime.strptime(create_date, "%Y-%m-%d %H:%M:%S")
 
@@ -28,7 +28,7 @@ class DeadlineField:
         if not field_instance:
             logger.error("Field instance is required to access deadline.")
             return self
-        logger.info(
+        logger.debug(
             f"Accessing deadline for Task. Current deadline: '{field_instance.__dict__.get(self.attr_name)}'")
         return field_instance.__dict__[self.attr_name]
 

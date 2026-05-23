@@ -21,7 +21,7 @@ class IdField:
         if self.attr_name in vars(field_instance):
             logger.error("Task ID can't be modified!")
             raise PermissionError("Task ID can't be modified!")
-        logger.info(f"Setting ID for Task: '{id}'")
+        logger.debug(f"Setting ID for Task: '{id}'")
         field_instance.__dict__[self.attr_name] = id
 
     def __get__(self, field_instance: object, owner: Optional[type] = None) -> Union[str, "IdField"]:
@@ -29,7 +29,7 @@ class IdField:
         if not field_instance:
             logger.error("Field instance is required to access Task ID.")
             return self
-        logger.info(
+        logger.debug(
             f"Accessing ID for Task. Current ID: '{field_instance.__dict__.get(self.attr_name)}'")
         return field_instance.__dict__[self.attr_name]
 

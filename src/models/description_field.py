@@ -14,7 +14,7 @@ class DescriptionField:
         if not isinstance(description, str):
             logger.error(f"Invalid description type: {type(description)}")
             raise TypeError("Description must be a string!")
-        logger.info(f"Setting description for Task: '{description}'")
+        logger.debug(f"Setting description for Task: '{description}'")
         field_instance.__dict__[self.attr_name] = description
 
     def __get__(self, field_instance: object, owner: Optional[type] = None) -> Union[str, "DescriptionField"]:
@@ -22,7 +22,7 @@ class DescriptionField:
         if not field_instance:
             logger.error("Field instance is required to access description.")
             return self
-        logger.info(
+        logger.debug(
             f"Accessing description for Task. Current description: '{field_instance.__dict__.get(self.attr_name)}'")
         return field_instance.__dict__[self.attr_name]
 
@@ -31,6 +31,6 @@ class DescriptionField:
         if not field_instance:
             logger.error("Field instance is required to delete description.")
             return
-        logger.info(
+        logger.debug(
             f"Deleting description for Task. Current description: '{field_instance.__dict__.get(self.attr_name)}'")
         field_instance.__dict__[self.attr_name] = ""

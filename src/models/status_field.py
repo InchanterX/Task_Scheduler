@@ -19,7 +19,7 @@ class StatusField:
             raise ValueError(
                 f"Status of the Task can only be: pending, active, finished, canceled. {status} was given."
             )
-        logger.info(f"Setting status to '{status}' for Task.")
+        logger.debug(f"Setting status to '{status}' for Task.")
         field_instance.__dict__[self.attr_name] = status.lower()
 
     def __get__(self, field_instance: object, owner: Optional[type] = None) -> Union[str, "StatusField"]:
@@ -27,7 +27,7 @@ class StatusField:
         if not field_instance:
             logger.error("Field instance is required to access status.")
             return self
-        logger.info(
+        logger.debug(
             f"Accessing status for Task. Current status: '{field_instance.__dict__.get(self.attr_name)}'")
         return field_instance.__dict__[self.attr_name]
 
