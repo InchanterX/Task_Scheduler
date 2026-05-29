@@ -13,7 +13,11 @@ It's a Task Scheduler program! But currently it just read tasks from different s
     │            ├──config.py                  # logger configuration
     │       ├── contracts/                     # contracts files
     │            ├── __init__.py               #
+    │            ├──task_source.py             # task handler contract
     │            ├──task_source.py             # task contract
+    │       ├── handlers/                      # handlers folder
+    │            ├── __init__.py               #
+    │            ├── handlers.py               # handlers them self
     │       ├── infrastructure/                # infrastructure elements
     │            ├── __init__.py               #
     │            ├── constants.py              # contains constants
@@ -30,11 +34,13 @@ It's a Task Scheduler program! But currently it just read tasks from different s
     │            ├── task.py                   # task dataclass
     |       ├── services/                      # actual services
     │            ├── __init__.py               #
+    │            ├── task_executor.py          # pull out tasks from queue to apply handlers
     │            ├── task_receiver.py          # service for receiving and displaying tasks
     │            ├── task_queue.py             # iterable queue of tasks implementation
     │       ├── sources/                       # functions for processing task sources
     │            ├── __init__.py               #
     │            ├── api_sources.py            # functions for processing API task sources
+    │            ├── async_file_reader.py      # function to read file asyncroniously without blocking
     │            ├── file_sources.py           # functions for processing file task sources
     │            ├── generate_sources.py       # functions for generating task sources
     |       ├── __init__.py                    #
@@ -65,6 +71,6 @@ python -m pytest
 - API sources
 - File sources
 - Generated sources
-They are described and stored in a separate folder. All of them have get_tasks() method, that is called by the task_queue service to retrieve tasks without thinking about how it will do it.
+They are described and stored in a separate folder. All of them have get_tasks() method, that is called by the task_queue service to retrieve tasks without thinking about how it will do it. There are several handlers that can be applied to elements of the queue.
 
 All tasks are stored in the same format that is determined by the task dataclass. And contract determine how this tasks will be processed.
