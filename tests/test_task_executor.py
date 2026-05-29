@@ -124,7 +124,7 @@ class TestStatusFilterHandler:
 
         task = Task(
             input_id=1, input_description="t", input_priority=1,
-            input_status="pending", input_create_time="2023-01-01 00:00:00",
+            input_status="pending", input_create_time="2026-01-01 00:00:00",
             input_deadline_time="2026-01-01 00:00:00"
         )
         await handler.handle(task)
@@ -137,7 +137,7 @@ class TestStatusFilterHandler:
 
         task = Task(
             input_id=2, input_description="t", input_priority=1,
-            input_status="active", input_create_time="2023-01-01 00:00:00",
+            input_status="active", input_create_time="2026-01-01 00:00:00",
             input_deadline_time="2026-01-01 00:00:00"
         )
         await handler.handle(task)

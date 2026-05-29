@@ -1,6 +1,5 @@
 from src.models.task import Task
 from src.services.task_queue import TaskQueue
-from src.contracts.task_source import TaskSource
 from src.sources.generate_source import GenerateSource
 from src.sources.api_source import ApiMockTaskSource
 from src.sources.file_source import FileSource
@@ -90,67 +89,50 @@ class TestTaskQueueBasics:
 class TestTaskQueueFiltering:
 
     @pytest.mark.asyncio
-    async def test_filter_by_status_pending(self):
+    @pytest.mark.parametrize("status,expected_count", [
+        ("pending", 5),
+        ("active", 0),
+    ])
+    async def test_filter_by_status(self, status, expected_count):
         source = GenerateSource(5)
         queue = TaskQueue(source)
-        filtered = await queue.filter_by_status("pending")
+        filtered = await queue.filter_by_status(status)
 
         tasks = []
         async for task in filtered:
             tasks.append(task)
 
-        assert len(tasks) == 5
-        assert all(t.status == "pending" for t in tasks)
+        assert len(tasks) == expected_count
+        assert all(t.status == status for t in tasks)
 
     @pytest.mark.asyncio
-    async def test_filter_by_status_active(self):
+    @pytest.mark.parametrize("priority_limit,expected_count", [
+        (2, 2),
+        (5, 5),
+    ])
+    async def test_filter_by_priority(self, priority_limit, expected_count):
         source = GenerateSource(5)
         queue = TaskQueue(source)
-        filtered = await queue.filter_by_status("active")
+        filtered = await queue.filter_by_priority(priority_limit)
 
         tasks = []
         async for task in filtered:
             tasks.append(task)
 
-        assert len(tasks) == 0
-
-    @pytest.mark.asyncio
-    async def test_filter_by_priority_low(self):
-        source = GenerateSource(5)
-        queue = TaskQueue(source)
-        filtered = await queue.filter_by_priority(2)
-
-        tasks = []
-        async for task in filtered:
-            tasks.append(task)
-
-        assert len(tasks) == 2
-        assert all(t.priority <= 2 for t in tasks)
-
-    @pytest.mark.asyncio
-    async def test_filter_by_priority_high(self):
-        source = GenerateSource(5)
-        queue = TaskQueue(source)
-        filtered = await queue.filter_by_priority(5)
-
-        tasks = []
-        async for task in filtered:
-            tasks.append(task)
-
-        assert len(tasks) == 5
-        assert all(t.priority <= 5 for t in tasks)
+        assert len(tasks) == expected_count
+        assert all(t.priority <= priority_limit for t in tasks)
 
     @pytest.mark.asyncio
     async def test_chained_filtering(self):
         tasks = [
             Task(input_id=1, input_description="Task 1", input_priority=1, input_status="pending",
-                 input_create_time="2023-01-01 00:00:00", input_deadline_time="2026-01-02 14:14:14"),
+                 input_create_time="2026-01-01 00:00:00", input_deadline_time="2026-01-02 14:14:14"),
             Task(input_id=2, input_description="Task 2", input_priority=3, input_status="active",
-                 input_create_time="2023-01-01 00:00:00", input_deadline_time="2026-01-02 14:14:14"),
+                 input_create_time="2026-01-01 00:00:00", input_deadline_time="2026-01-02 14:14:14"),
             Task(input_id=3, input_description="Task 3", input_priority=2, input_status="pending",
-                 input_create_time="2023-01-01 00:00:00", input_deadline_time="2026-01-02 14:14:14"),
+                 input_create_time="2026-01-01 00:00:00", input_deadline_time="2026-01-02 14:14:14"),
             Task(input_id=4, input_description="Task 4", input_priority=4, input_status="pending",
-                 input_create_time="2023-01-01 00:00:00", input_deadline_time="2026-01-02 14:14:14"),
+                 input_create_time="2026-01-01 00:00:00", input_deadline_time="2026-01-02 14:14:14"),
         ]
 
         source = MockAsyncTaskSource(tasks)

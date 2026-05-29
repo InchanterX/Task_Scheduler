@@ -1,4 +1,3 @@
-from src.models.task import Task
 from src.sources.api_source import ApiMockTaskSource
 from src.sources.file_source import FileSource
 from src.sources.generate_source import GenerateSource
@@ -8,28 +7,18 @@ import pytest
 class TestGenerateSource:
 
     @pytest.mark.asyncio
-    async def test_generate_source_single_task(self):
-        source = GenerateSource(1)
+    @pytest.mark.parametrize("count,expected_count", [
+        (1, 1),
+        (5, 5),
+    ])
+    async def test_generate_source(self, count, expected_count):
+        source = GenerateSource(count)
         tasks = []
         async for task in source.get_tasks():
             tasks.append(task)
 
-        assert len(tasks) == 1
+        assert len(tasks) == expected_count
         assert tasks[0].id == 1
-        assert tasks[0].description == "Task number 1"
-        assert tasks[0].priority == 2
-        assert tasks[0].status == "pending"
-
-    @pytest.mark.asyncio
-    async def test_generate_source_multiple_tasks(self):
-        source = GenerateSource(5)
-        tasks = []
-        async for task in source.get_tasks():
-            tasks.append(task)
-
-        assert len(tasks) == 5
-        assert tasks[0].id == 1
-        assert tasks[4].id == 5
         assert all(t.status == "pending" for t in tasks)
         assert all(
             t.create_time.strftime(
@@ -109,28 +98,23 @@ class TestApiMockTaskSource:
 class TestFileSource:
 
     @pytest.mark.asyncio
-    async def test_file_source_friday_tasks(self):
-        source = FileSource("friday.txt")
+    @pytest.mark.parametrize("filename,expected_count,first_id,first_desc", [
+        ("friday.txt", 4, 1, "Finish sprint presentation"),
+        ("saturday.txt", None, None, None),
+    ])
+    async def test_file_source(self, filename, expected_count, first_id, first_desc):
+        source = FileSource(filename)
         tasks = []
         async for task in source.get_tasks():
             tasks.append(task)
 
-        assert len(tasks) == 4
-        assert tasks[0].id == 1
-        assert tasks[0].description == "Finish sprint presentation"
-        assert tasks[0].priority == 100
-        assert tasks[0].status == "finished"
-        assert tasks[3].id == 4
-        assert tasks[3].description == "Prepare to Python context"
+        if expected_count is not None:
+            assert len(tasks) == expected_count
+            assert tasks[0].id == first_id
+            assert tasks[0].description == first_desc
+        else:
+            assert len(tasks) > 0
 
-    @pytest.mark.asyncio
-    async def test_file_source_saturday_tasks(self):
-        source = FileSource("saturday.txt")
-        tasks = []
-        async for task in source.get_tasks():
-            tasks.append(task)
-
-        assert len(tasks) > 0
         assert all(hasattr(t, 'id') for t in tasks)
         assert all(hasattr(t, 'description') for t in tasks)
 

@@ -1,5 +1,4 @@
 from src.infrastructure.display import display_tasks
-from src.models.task import Task
 from src.services.task_queue import TaskQueue
 from src.sources.generate_source import GenerateSource
 import pytest
